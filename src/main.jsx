@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Analytics } from '@vercel/analytics/react';
 import { loadSchedule } from './api';
 import { fallbackSchedule } from './data';
 import './styles.css';
@@ -317,6 +318,7 @@ function App() {
 
   return (
     <div className="app-shell">
+      <Analytics />
       {/* ── TOP BAR ── */}
       <header className="topbar">
         <div className="topbar-inner page-width">
