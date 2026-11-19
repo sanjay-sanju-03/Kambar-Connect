@@ -71,9 +71,12 @@ const distDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)),
 app.use(express.static(distDirectory));
 app.get('*', (_request, response) => response.sendFile(path.join(distDirectory, 'index.html')));
 
-ensureAdmin().then(() => {
-  app.listen(port, () => console.log(`Kasargod Bus Guide API listening on http://localhost:${port}`));
-}).catch((error) => {
+ensureAdmin().catch((error) => {
   console.error(`Unable to initialise admin database: ${error.message}`);
-  process.exitCode = 1;
 });
+
+if (!process.env.VERCEL) {
+  app.listen(port, () => console.log(`Kasargod Bus Guide API listening on http://localhost:${port}`));
+}
+
+export default app;
