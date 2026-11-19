@@ -12,6 +12,7 @@
     "test:server": "node --test server/schedule.test.js"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.4.1",
     "bcryptjs": "^3.0.3",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

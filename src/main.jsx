@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Analytics } from '@vercel/analytics/react';
 import { loadSchedule } from './api';
 import { fallbackSchedule, formatTime, getTripStatus, nextTrip, toTrips } from './data';
 import './styles.css';
@@ -142,6 +143,7 @@ function App() {
   if (!schedule || !route || !next) return <div className="loading" role="status" aria-live="polite"><div className="loading-bus"><div className="brand-mark"><Icon name="bus" size={28} /></div><span className="loading-road" /></div><p>Loading bus timetable…</p></div>;
 
   return <div className="app-shell">
+    <Analytics />
     <header className="topbar page-width"><button className="brand" onClick={openHome}><span className="brand-mark"><Icon name="bus" size={22} /></span><span>{t.brand}</span></button><nav><button className={view === 'home' ? 'nav-active' : ''} onClick={openHome}>{t.home}</button><button className={view === 'timetable' ? 'nav-active' : ''} onClick={openTimetable}>{t.timetable}</button></nav><button className="language-button" onClick={() => setLanguage(language === 'en' ? 'ml' : 'en')}><span>◉</span>{t.language}</button></header>
     <main className="page-width">
       {view === 'admin' ? <section className="admin-page"><div className="page-heading"><span className="eyebrow">Protected area</span><h1>Timetable admin</h1><p>Add, edit, or remove buses and timings in the live schedule.</p></div>{adminLoading ? <div className="notice-card">Checking your admin session…</div> : adminAuthorized ? <><div className="admin-toolbar"><div><strong>Signed in</strong><span>{adminEmail}</span></div><button className="outline-button" onClick={logoutAdmin}>Sign out</button></div><form className="admin-editor" onSubmit={saveSchedule}><label htmlFor="schedule-json">Schedule JSON</label><textarea id="schedule-json" value={scheduleJson} onChange={(event) => setScheduleJson(event.target.value)} spellCheck="false" /><div className="admin-actions">{adminError && <span className="admin-error" role="alert">{adminError}</span>}{adminSuccess && <span className="admin-success" role="status">{adminSuccess}</span>}<button className="primary-button" type="submit">Save schedule</button></div></form></> : <form className="admin-login" onSubmit={loginAdmin}><h2>Admin sign in</h2><label>Email<input type="email" value={adminEmail} onChange={(event) => setAdminEmail(event.target.value)} required autoComplete="email" /></label><label>Password<input type="password" value={adminPassword} onChange={(event) => setAdminPassword(event.target.value)} required autoComplete="current-password" /></label>{adminError && <span className="admin-error" role="alert">{adminError}</span>}<button className="primary-button" type="submit">Sign in</button></form>}</section> :
